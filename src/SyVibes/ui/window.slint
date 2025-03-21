@@ -1,0 +1,141 @@
+import {VerticalBox, ScrollView, TabWidget} from "std-widgets.slint";
+
+export component MainWindow inherits Window {
+    min-width: 900px;
+    min-height: 900px;
+
+    in property <string> processes: "";
+    in property <string> cpu: "";
+    in property <string> memory: "";
+    in property <string> disk: "";
+    in property <string> network: "";
+
+    title: "SyVibes";
+    accessible-role: AccessibleRole.image;
+    background: #1e1e1f;
+    
+    GridLayout {
+        spacing: 20pt;
+        padding: 10px;
+        x: 8px;
+        y: 17px;
+        TabWidget {
+            row: 0;
+            col: 0;
+            width: root.width - 20px;
+            Tab {
+                title: "Basic processes \ninfos";
+                ScrollView {
+                    width: parent.width;
+                    height: parent.height - 60px;
+                    viewport-width: 500px;
+                    viewport-height: 2000px;
+                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+                    Text {
+                        x: 0px;
+                        y: 0px;
+                        text: root.processes;
+                        font-size: 15px;
+                        font-weight: 900;
+                        font-family: "Comic Sans MS";
+                        font-italic: true;
+                    }
+                }
+            }
+
+            Tab {
+                title: "Cpu details";
+                padding: 10px;
+                ScrollView {
+                    width: parent.width;
+                    height: parent.height - 60px;
+                    viewport-width: 500px;
+                    viewport-height: 2000px;
+                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+
+                    Text {
+                        x: 0px;
+                        y: 0px;
+                        text: root.cpu;
+                        font-size: 15px;
+                        font-weight: 900;
+                        font-family: "Comic Sans MS";
+                        font-italic: true;
+                    }
+                }
+            }
+
+            Tab {
+                title: "Memory details";
+                padding: 10px;
+                ScrollView {
+                    width: parent.width;
+                    height: parent.height - 60px;
+                    viewport-width: 300px;
+                    viewport-height: 2000px;
+                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+
+                    Text {
+                        x: 0px;
+                        y: 0px;
+                        text: root.memory;
+                        font-size: 15px;
+                        font-weight: 900;
+                        font-family: "Comic Sans MS";
+                        font-italic: true;
+                    }
+                }
+            }
+
+            Tab {
+                title: "Disk details";
+                padding: 10px;
+                ScrollView {
+                    width: parent.width;
+                    height: parent.height - 60px;
+                    viewport-width: 300px;
+                    viewport-height: 2000px;
+                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+
+                    Text {
+                        x: 0px;
+                        y: 0px;
+                        text: root.disk;
+                        font-size: 15px;
+                        font-weight: 900;
+                        font-family: "Comic Sans MS";
+                        font-italic: true;
+                    }
+                }
+            }
+
+            Tab {
+                title: "Network details";
+                padding: 10px;
+                ScrollView {
+                    width: parent.width;
+                    height: parent.height - 60px;
+                    viewport-width: 300px;
+                    viewport-height: 2000px;
+                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+
+                    Text {
+                        x: 0px;
+                        y: 0px;
+                        text: root.network;
+                        font-size: 15px;
+                        font-weight: 900;
+                        font-family: "Comic Sans MS";
+                        font-italic: true;
+                    }
+                }
+            }
+        }
+    }
+}
+//need to improove all those tabs
