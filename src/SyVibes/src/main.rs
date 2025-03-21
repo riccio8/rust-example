@@ -5,6 +5,7 @@ use std::time::Duration;
 
 slint::include_modules!();  // This macro should define `MainWIndows`. Ensure the `.slint` file is correctly included and compiled.
 
+
 fn main() {
     let ui = MainWindow::new().unwrap();
     let ui_handle = ui.as_weak();
@@ -22,6 +23,7 @@ fn main() {
             let mut list = String::new();
             let mut mem = String::new();
             let mut cpu = String::new();
+            let mut system = String::new();
 
             for (pid, process) in sys.processes() {
                 list.push_str(&format!("{:#?} with PID:\t {}\n", process.name(), pid));
@@ -37,12 +39,23 @@ fn main() {
             sys.total_swap(),
             sys.used_swap()));
 
+            system.push_str(&format!(        "System Information:\n\
+            \tSystem name:           {:#?}\n\
+            \tKernel version:        {:#?}\n\
+            \tOS version:            {:#?}\n\
+            \tHost name:             {:#?}",
+            System::name(),
+            System::kernel_version(),
+            System::os_version(),
+            System::host_name()));
+
             let ui_handle_clone = ui_handle_clone_1.clone();
             slint::invoke_from_event_loop(move || {
                 if let Some(ui) = ui_handle_clone.upgrade() {
                     ui.set_processes(SharedString::from(list));
                     ui.set_memory(SharedString::from(mem));
                     ui.set_cpu(SharedString::from(cpu));
+                    ui.set_system(SharedString::from(system));
                 }
             })
             .unwrap();
