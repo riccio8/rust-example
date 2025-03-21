@@ -18,12 +18,12 @@ export component MainWindow inherits Window {
         TabWidget {
             row: 0;
             col: 0;
-            width: 300px;
+            width: 350px;
             Tab {
                 title: "Processes";
                 ScrollView {
-                    width: 250px;
-                    height: 800px;
+                    width: parent.width;
+                    height: parent.height - 60px;
                     viewport-width: 500px;
                     viewport-height: 2000px;
 
