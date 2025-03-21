@@ -9,13 +9,14 @@ export component MainWindow inherits Window {
     in property <string> memory: "";
     in property <string> disk: "";
     in property <string> network: "";
+    in property <string> system: "";
 
     title: "SyVibes";
     accessible-role: AccessibleRole.image;
     background: #1e1e1f;
     
     GridLayout {
-        spacing: 20pt;
+        spacing: 20px;
         padding: 10px;
         x: 8px;
         y: 17px;
@@ -128,6 +129,29 @@ export component MainWindow inherits Window {
                         x: 0px;
                         y: 0px;
                         text: root.network;
+                        font-size: 15px;
+                        font-weight: 900;
+                        font-family: "Comic Sans MS";
+                        font-italic: true;
+                    }
+                }
+            }
+
+            Tab {
+                title: "System infos";
+                padding: 10px;
+                ScrollView {
+                    width: parent.width;
+                    height: parent.height - 60px;
+                    viewport-width: 300px;
+                    viewport-height: 2000px;
+                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+
+                    Text {
+                        x: 0px;
+                        y: 0px;
+                        text: root.system;
                         font-size: 15px;
                         font-weight: 900;
                         font-family: "Comic Sans MS";
