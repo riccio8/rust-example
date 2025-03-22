@@ -1,19 +1,22 @@
 use slint::SharedString;
-use sysinfo::{Disks, Networks, System};
+use sysinfo::{Components, Disks, Networks, System};
 use std::thread;
 use std::time::Duration;
 
-slint::include_modules!();  // This macro should define `MainWIndows`. Ensure the `.slint` file is correctly included and compiled.
+slint::include_modules!();  // This macro should define `MainWIndows`
+// in cargo.toml: [package.metadata.winres] windows_subsystem = "Windows"
 
 
 fn main() {
     let ui = MainWindow::new().unwrap();
     let ui_handle = ui.as_weak();
+    // ui.window().set_maximized(true);
 
-    // Clone the ui_handle at the start before moving it into the threads.
+    // Clone the ui_handle at the start before moving it into the threads otherwise it won't access it
     let ui_handle_clone_1 = ui_handle.clone();
     let ui_handle_clone_2 = ui_handle.clone();
     let ui_handle_clone_3 = ui_handle.clone();
+    sysinfo::set_open_files_limit(0);
 
     // Start the first thread for system information.
     thread::spawn(move || {
@@ -93,7 +96,6 @@ fn main() {
                 ));
             }
 
-            // Use the cloned handle in the closure
             let ui_handle_clone = ui_handle_clone_2.clone();
             slint::invoke_from_event_loop(move || {
                 if let Some(ui) = ui_handle_clone.upgrade() {
@@ -108,10 +110,15 @@ fn main() {
     });
 
     // Start the third thread for disk information.
-    thread::spawn(move || {
+    thread::spawn(move || -> ! {
         let mut disks = Disks::new_with_refreshed_list();
+        
+        let mut components = Components::new_with_refreshed_list();
+        
         loop {
             let mut disks_info = String::new();
+            let mut comp = String::new();
+
             for disk in disks.iter() {
                 disks_info.push_str(&format!(
                 "Disk: {:#?}\n\
@@ -135,17 +142,32 @@ fn main() {
                 ));
             }
 
+            if components.is_empty() {
+                comp.push_str("No components found.\n");
+            }
+
+            for component in &components {
+                if let Some(temperature) = component.temperature() {
+                    comp.push_str(&format!("{} \t{:#?}°C\n", component.label(), temperature));
+                } else {
+                    comp.push_str(&format!("{} (unknown temperature)\n", component.label()));
+                }
+            }
+
             // Use the cloned handle in the closure
             let ui_handle_clone = ui_handle_clone_3.clone();
             slint::invoke_from_event_loop(move || {
                 if let Some(ui) = ui_handle_clone.upgrade() {
                     ui.set_disk(SharedString::from(disks_info.clone()));
+                    ui.set_components(SharedString::from(comp.clone()));
                 }
             })
             .unwrap();
 
             thread::sleep(Duration::from_secs(4));
             disks.refresh(true); 
+            components.refresh(false);
+            
         }
     });
 
