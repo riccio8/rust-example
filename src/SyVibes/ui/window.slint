@@ -1,15 +1,51 @@
-import {VerticalBox, ScrollView, TabWidget} from "std-widgets.slint";
+import {VerticalBox, ScrollView, TabWidget, TabWidget, StandardTableView} from "std-widgets.slint";
+
 
 export component MainWindow inherits Window {
     min-width: 900px;
     min-height: 900px;
 
+    // Components
+    in property <string> components: "Nothing found";
+    
+    // Processes and infos about them
     in property <string> processes: "";
+    in property <string> current: "";
+    // in property <string> pid: "";
+    in property <string> processInfo: "";
+
+    
+    // hardware resources (CPU, memory, disk, net)
     in property <string> cpu: "";
     in property <string> memory: "";
     in property <string> disk: "";
     in property <string> network: "";
     in property <string> system: "";
+    in property <string> loadAvg: "";
+    in property <string> diskInfo: "";
+    in property <string> diskUsage: "";
+    in property <string> disksInterface: "";
+    in property <string> networkData: "";
+    
+    // Limits and methods
+    in property <string> cgroupLimits: "";
+    in property <string> componentInfo: "";
+    in property <string> cpuMethods: "";
+    in property <string> cpuRefreshKind: "";
+    in property <string> diskRefreshKind: "";
+    in property <string> memoryRefreshKind: "";
+    in property <string> systemStructs: "";
+    
+    // Groups and users
+    in property <string> gid: "";
+    in property <string> groupInfo: "";
+    in property <string> groupsInteraction: "";
+    in property <string> ipNetwork: "";
+    in property <string> macAddr: "";
+    in property <string> uid: "";
+    in property <string> userInfo: "";
+    in property <string> usersInteraction: "";
+
 
     title: "SyVibes";
     accessible-role: AccessibleRole.image;
@@ -20,146 +56,206 @@ export component MainWindow inherits Window {
         padding: 10px;
         x: 8px;
         y: 17px;
+
+
         TabWidget {
-            row: 0;
-            col: 0;
-            width: root.width - 20px;
-            Tab {
-                title: "Basic processes \ninfos";
-                ScrollView {
-                    width: parent.width;
+            Tab{
+                title: "Processes details";
+                padding: 10px;
+                StandardTableView {
+                    x: 0px;
+                    y: 0px;
+                    padding: 30px;
+                    width: parent.width - 60px;
+                    height: parent.height - 60px;
+                    viewport-width: 500px;
+                    viewport-height: 1000px;
+                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+                    horizontal_stretch: 300;
+                    vertical_stretch: 300;
+            
+                    columns: [
+                        { title: "Basic processes \ninfos" },
+                        { title: "More processes \ninfos" },
+                        { title: "Current process \ninfos" }
+                    ];
+            
+                    rows: [
+                        [
+                            { text: root.processes },
+                            { text: root.processInfo },
+                            { text: root.current }
+                        ]
+                    ];
+                }        
+            }
+
+            Tab{
+                title: "Hardware resources";
+                padding: 10px;
+
+                StandardTableView {
+                    x: 0px;
+                    y: 0px;
+                    padding: 30px;
+                    width: parent.width - 60px;
+                    height: parent.height - 60px;
+                    viewport-width: 500px;
+                    viewport-height: 1000px;
+                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+                    horizontal_stretch: 300;
+                    vertical_stretch: 300;
+
+                    columns: [
+                        { title: "Cou \ninfos" },
+                        { title: "Memory \ninfos" },
+                        { title: "Disk process \ninfos" }
+                    ];
+
+                    rows: [
+                        [
+                             {
+                                text: root.cpu,
+                                font-size: 15px,
+                                font-weight: 900,
+                                font-family: "Comic Sans MS",
+                                font-italic: true},
+                        ],
+                        [
+                             {
+                                text: root.memory,
+                                font-size: 15px,
+                                font-weight: 900,
+                                font-family: "Comic Sans MS",
+                                font-italic: true},
+                        ],
+                        [
+                            {
+                                text: root.disk,
+                                font-size: 15px,
+                                font-weight: 900,
+                                font-family: "Comic Sans MS",
+                                font-italic: true,},
+                        ]
+                    ];
+                }     
+            }
+        
+
+            Tab{
+                title: "Limits and methods";
+                padding: 10px;
+
+                StandardTableView {
+                    x: 0px;
+                    y: 0px;
                     height: parent.height - 60px;
                     viewport-width: 500px;
                     viewport-height: 2000px;
                     vertical-scrollbar-policy: ScrollBarPolicy.always_on;
                     horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-                    Text {
-                        x: 0px;
-                        y: 0px;
-                        text: root.processes;
-                        font-size: 15px;
-                        font-weight: 900;
-                        font-family: "Comic Sans MS";
-                        font-italic: true;
-                    }
-                }
+                    min_width: 500px;
+                    horizontal_stretch: 300;
+                    vertical_stretch: 300;
+                    rows: [
+                        [
+                            { text: "Components \ninfos" }, {
+                                text: root.components,
+                                font-size: 15px,
+                                font-weight: 900,
+                                font-family: "Comic Sans MS",
+                                font-italic: true},
+                        ],
+                    ];
+                }     
             }
+        
 
-            Tab {
-                title: "Cpu details";
+            Tab{
+                title: "Groups and users";
                 padding: 10px;
-                ScrollView {
-                    width: parent.width;
+                StandardTableView {
+                    x: 0px;
+                    y: 0px;
                     height: parent.height - 60px;
                     viewport-width: 500px;
                     viewport-height: 2000px;
                     vertical-scrollbar-policy: ScrollBarPolicy.always_on;
                     horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-
-                    Text {
-                        x: 0px;
-                        y: 0px;
-                        text: root.cpu;
-                        font-size: 15px;
-                        font-weight: 900;
-                        font-family: "Comic Sans MS";
-                        font-italic: true;
-                    }
+                    min_width: 500px;
+                    horizontal_stretch: 300;
+                    vertical_stretch: 300;
+                    rows: [
+                        [
+                            { text: "User \ninfos" }, {
+                                text: root.userInfo,
+                                font-size: 15px,
+                                font-weight: 900,
+                                font-family: "Comic Sans MS",
+                                font-italic: true},
+                        ],
+                    ];
                 }
             }
 
-            Tab {
-                title: "Memory details";
-                padding: 10px;
-                ScrollView {
-                    width: parent.width;
-                    height: parent.height - 60px;
-                    viewport-width: 300px;
-                    viewport-height: 2000px;
-                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
-                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-
-                    Text {
-                        x: 0px;
-                        y: 0px;
-                        text: root.memory;
-                        font-size: 15px;
-                        font-weight: 900;
-                        font-family: "Comic Sans MS";
-                        font-italic: true;
-                    }
-                }
-            }
-
-            Tab {
-                title: "Disk details";
-                padding: 10px;
-                ScrollView {
-                    width: parent.width;
-                    height: parent.height - 60px;
-                    viewport-width: 300px;
-                    viewport-height: 2000px;
-                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
-                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-
-                    Text {
-                        x: 0px;
-                        y: 0px;
-                        text: root.disk;
-                        font-size: 15px;
-                        font-weight: 900;
-                        font-family: "Comic Sans MS";
-                        font-italic: true;
-                    }
-                }
-            }
-
-            Tab {
+            Tab{
                 title: "Network details";
                 padding: 10px;
-                ScrollView {
-                    width: parent.width;
+
+                StandardTableView {
+                    x: 0px;
+                    y: 0px;
                     height: parent.height - 60px;
-                    viewport-width: 300px;
+                    viewport-width: 500px;
                     viewport-height: 2000px;
                     vertical-scrollbar-policy: ScrollBarPolicy.always_on;
                     horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-
-                    Text {
-                        x: 0px;
-                        y: 0px;
-                        text: root.network;
-                        font-size: 15px;
-                        font-weight: 900;
-                        font-family: "Comic Sans MS";
-                        font-italic: true;
-                    }
+                    min_width: 500px;
+                    horizontal_stretch: 300;
+                    vertical_stretch: 300;
+                    rows: [
+                        [
+                            { text: "Network \ninfos" }, {
+                                text: root.network,
+                                font-size: 15px,
+                                font-weight: 900,
+                                font-family: "Comic Sans MS",
+                                font-italic: true},
+                        ],
+                    ];
                 }
             }
+        
 
-            Tab {
+            Tab{
                 title: "System infos";
                 padding: 10px;
-                ScrollView {
-                    width: parent.width;
+                StandardTableView {
+                    x: 0px;
+                    y: 0px;
                     height: parent.height - 60px;
-                    viewport-width: 300px;
+                    viewport-width: 500px;
                     viewport-height: 2000px;
                     vertical-scrollbar-policy: ScrollBarPolicy.always_on;
                     horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-
-                    Text {
-                        x: 0px;
-                        y: 0px;
-                        text: root.system;
-                        font-size: 15px;
-                        font-weight: 900;
-                        font-family: "Comic Sans MS";
-                        font-italic: true;
-                    }
+                    min_width: 500px;
+                    horizontal_stretch: 300;
+                    vertical_stretch: 300;
+                    rows: [
+                        [
+                            { text: "System \ninfos" }, {
+                                text: root.system,
+                                font-size: 15px,
+                                font-weight: 900,
+                                font-family: "Comic Sans MS",
+                                font-italic: true},
+                        ],
+                    ];
                 }
             }
         }
+        
     }
 }
-//need to improove all those tabs
