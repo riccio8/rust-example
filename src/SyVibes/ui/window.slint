@@ -9,9 +9,6 @@ export component MainWindow inherits Window {
     in property <string> components: "Nothing found";
     
     // Processes and infos about them
-    in property <string> processes: "";
-    in property <string> current: "";
-    // in property <string> pid: "";
     in property <string> processInfo: "";
 
     
@@ -48,7 +45,6 @@ export component MainWindow inherits Window {
 
 
     title: "SyVibes";
-    accessible-role: AccessibleRole.image;
     background: #1e1e1f;
     
     GridLayout {
@@ -59,6 +55,7 @@ export component MainWindow inherits Window {
 
 
         TabWidget {
+            visible: true;
             Tab{
                 title: "Processes details";
                 padding: 10px;
@@ -68,80 +65,96 @@ export component MainWindow inherits Window {
                     padding: 30px;
                     width: parent.width - 60px;
                     height: parent.height - 60px;
-                    viewport-width: 500px;
-                    viewport-height: 1000px;
+                    viewport-width: 1500px;
+                    viewport-height: 1500px;
                     vertical-scrollbar-policy: ScrollBarPolicy.always_on;
                     horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
                     horizontal_stretch: 300;
                     vertical_stretch: 300;
             
                     columns: [
-                        { title: "Basic processes \ninfos" },
-                        { title: "More processes \ninfos" },
-                        { title: "Current process \ninfos" }
+                        { title: "Processes \ninfos"},
                     ];
+                    current-row: 0;
             
                     rows: [
                         [
-                            { text: root.processes },
-                            { text: root.processInfo },
-                            { text: root.current }
+                            { text: root.processInfo, col:1, width: 300pt, height: parent.height, padding: 30px, font-size: 25px,  spacing: 20px},
                         ]
                     ];
+                    
                 }        
             }
 
-            Tab{
+            Tab {
                 title: "Hardware resources";
                 padding: 10px;
-
+            
                 StandardTableView {
                     x: 0px;
                     y: 0px;
                     padding: 30px;
                     width: parent.width - 60px;
                     height: parent.height - 60px;
-                    viewport-width: 500px;
-                    viewport-height: 1000px;
+                    viewport-width: 1500px;
+                    viewport-height: 1500px;
                     vertical-scrollbar-policy: ScrollBarPolicy.always_on;
                     horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
                     horizontal_stretch: 300;
                     vertical_stretch: 300;
+            
 
                     columns: [
-                        { title: "Cou \ninfos" },
-                        { title: "Memory \ninfos" },
-                        { title: "Disk process \ninfos" }
+                        { title: "Cpu infos", sort_order: SortOrder.descending},
+                        { title: "Memory infos" },
+                        { title: "Disk process infos" }
                     ];
-
+            
                     rows: [
                         [
-                             {
+                            {  
                                 text: root.cpu,
                                 font-size: 15px,
                                 font-weight: 900,
                                 font-family: "Comic Sans MS",
-                                font-italic: true},
+                                col: 0,
+                                width: 300pt, height: parent.height, padding: 30px, spacing: 20px, font-size: 25px,
+                                font-italic: true,
+                                rotation: 90, 
+                                text-align: TextHorizontalAlignment.center,
+                                vertical-align: TextVerticalAlignment.center,
+                            }
                         ],
                         [
-                             {
+                            {
                                 text: root.memory,
                                 font-size: 15px,
                                 font-weight: 900,
                                 font-family: "Comic Sans MS",
-                                font-italic: true},
+                                col: 1, width: 300pt, height: parent.height, padding: 30px, spacing: 20px,font-size: 25px,
+                                font-italic: true,
+                                rotation: 90, 
+                                text-align: TextHorizontalAlignment.center,
+                                vertical-align: TextVerticalAlignment.center,
+                            }
                         ],
                         [
                             {
                                 text: root.disk,
                                 font-size: 15px,
-                                font-weight: 900,
+                                font-weight: 900, width: 300pt, height: parent.height, padding: 30px, spacing: 20px,font-size: 25px,
                                 font-family: "Comic Sans MS",
-                                font-italic: true,},
+                                col: 2,
+                                font-italic: true,
+                                rotation: 90, 
+                                text-align: TextHorizontalAlignment.center,
+                                vertical-align: TextVerticalAlignment.center,
+                            }
                         ]
                     ];
-                }     
+                }
             }
+            
         
 
             Tab{
@@ -159,11 +172,17 @@ export component MainWindow inherits Window {
                     min_width: 500px;
                     horizontal_stretch: 300;
                     vertical_stretch: 300;
+                    
+
+                    columns: [
+                        { title: "Components \ninfos" }
+                    ];
+
                     rows: [
                         [
-                            { text: "Components \ninfos" }, {
+                            {
                                 text: root.components,
-                                font-size: 15px,
+                                font-size: 25px,
                                 font-weight: 900,
                                 font-family: "Comic Sans MS",
                                 font-italic: true},
@@ -187,11 +206,17 @@ export component MainWindow inherits Window {
                     min_width: 500px;
                     horizontal_stretch: 300;
                     vertical_stretch: 300;
+
+                    columns: [
+                        { title: "user \ninfos" },
+                    ];
+                    
+
                     rows: [
                         [
-                            { text: "User \ninfos" }, {
+                            {
                                 text: root.userInfo,
-                                font-size: 15px,
+                                font-size: 25px,
                                 font-weight: 900,
                                 font-family: "Comic Sans MS",
                                 font-italic: true},
@@ -215,11 +240,16 @@ export component MainWindow inherits Window {
                     min_width: 500px;
                     horizontal_stretch: 300;
                     vertical_stretch: 300;
+
+                    columns: [
+                        { title: "Network \ninfos" },
+                    ];
+
                     rows: [
                         [
-                            { text: "Network \ninfos" }, {
+                            {
                                 text: root.network,
-                                font-size: 15px,
+                                font-size: 25px,
                                 font-weight: 900,
                                 font-family: "Comic Sans MS",
                                 font-italic: true},
@@ -243,11 +273,16 @@ export component MainWindow inherits Window {
                     min_width: 500px;
                     horizontal_stretch: 300;
                     vertical_stretch: 300;
+
+                    columns: [
+                        { title: "System \ninfos" },
+                    ];
+
                     rows: [
                         [
-                            { text: "System \ninfos" }, {
+                            {
                                 text: root.system,
-                                font-size: 15px,
+                                font-size: 25px,
                                 font-weight: 900,
                                 font-family: "Comic Sans MS",
                                 font-italic: true},
