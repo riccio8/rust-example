@@ -1,10 +1,11 @@
-import {VerticalBox, ScrollView, TabWidget, TabWidget, StandardTableView} from "std-widgets.slint";
+import {VerticalBox, ScrollView, TabWidget, TabWidget, StandardTableView, LineEdit, GridBox} from "std-widgets.slint";
 
 
 export component MainWindow inherits Window {
     min-width: 900px;
     min-height: 900px;
 
+    callback killProc(string);
     // Components
     in property <string> components: "Nothing found";
     
@@ -44,253 +45,275 @@ export component MainWindow inherits Window {
     in property <string> usersInteraction: "";
 
 
+    in-out property <string> killed: "";
+
     title: "SyVibes";
     background: #1e1e1f;
     
-    GridLayout {
-        spacing: 20px;
+
+
+    TabWidget {
+        visible: true;
+
+        Tab {
+        title: "Processes details";
         padding: 10px;
-        x: 8px;
-        y: 17px;
 
-
-        TabWidget {
-            visible: true;
-            Tab{
-                title: "Processes details";
+            GridBox {
+                spacing: 10px;
+                min-width: 500px;
+                min-height: 300px;
                 padding: 10px;
+                x: 8px;
+                y: 17px;
+                width: parent.width - 50px;
+                height: parent.height;
+        
                 StandardTableView {
-                    x: 0px;
-                    y: 0px;
-                    padding: 30px;
-                    width: parent.width - 60px;
-                    height: parent.height - 60px;
-                    viewport-width: 1500px;
-                    viewport-height: 1500px;
+                    col: 0;
+                    row: 1;
+                    height: parent.height - 50px;  
+                    max-width: 600pt;
+                    padding: 10px;
+                    viewport-width: parent.width;
+                    viewport-height: parent.height;
                     vertical-scrollbar-policy: ScrollBarPolicy.always_on;
                     horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-                    horizontal_stretch: 300;
-                    vertical_stretch: 300;
-            
+                    horizontal_stretch: 2;
+                    vertical_stretch: 1;
+        
                     columns: [
-                        { title: "Processes \ninfos"},
+                        { title: "Processes \ninfos" },
                     ];
                     current-row: 0;
-            
+        
                     rows: [
                         [
-                            { text: root.processInfo, col:1, width: 300pt, height: parent.height, padding: 30px, font-size: 25px,  spacing: 20px},
-                        ]
-                    ];
-                    
-                }        
-            }
-
-            Tab {
-                title: "Hardware resources";
-                padding: 10px;
-            
-                StandardTableView {
-                    x: 0px;
-                    y: 0px;
-                    padding: 30px;
-                    width: parent.width - 60px;
-                    height: parent.height - 60px;
-                    viewport-width: 1500px;
-                    viewport-height: 1500px;
-                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
-                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-                    horizontal_stretch: 300;
-                    vertical_stretch: 300;
-            
-
-                    columns: [
-                        { title: "Cpu infos", sort_order: SortOrder.descending},
-                        { title: "Memory infos" },
-                        { title: "Disk process infos" }
-                    ];
-            
-                    rows: [
-                        [
-                            {  
-                                text: root.cpu,
-                                font-size: 15px,
-                                font-weight: 900,
-                                font-family: "Comic Sans MS",
-                                col: 0,
-                                width: 300pt, height: parent.height, padding: 30px, spacing: 20px, font-size: 25px,
-                                font-italic: true,
-                                rotation: 90, 
-                                text-align: TextHorizontalAlignment.center,
-                                vertical-align: TextVerticalAlignment.center,
-                            }
-                        ],
-                        [
-                            {
-                                text: root.memory,
-                                font-size: 15px,
-                                font-weight: 900,
-                                font-family: "Comic Sans MS",
-                                col: 1, width: 300pt, height: parent.height, padding: 30px, spacing: 20px,font-size: 25px,
-                                font-italic: true,
-                                rotation: 90, 
-                                text-align: TextHorizontalAlignment.center,
-                                vertical-align: TextVerticalAlignment.center,
-                            }
-                        ],
-                        [
-                            {
-                                text: root.disk,
-                                font-size: 15px,
-                                font-weight: 900, width: 300pt, height: parent.height, padding: 30px, spacing: 20px,font-size: 25px,
-                                font-family: "Comic Sans MS",
-                                col: 2,
-                                font-italic: true,
-                                rotation: 90, 
-                                text-align: TextHorizontalAlignment.center,
-                                vertical-align: TextVerticalAlignment.center,
-                            }
+                            { text: root.processInfo, width: 300pt, height: 40px, padding: 10px, font-size: 18px },
                         ]
                     ];
                 }
-            }
-            
         
-
-            Tab{
-                title: "Limits and methods";
-                padding: 10px;
-
-                StandardTableView {
-                    x: 0px;
-                    y: 0px;
-                    height: parent.height - 60px;
-                    viewport-width: 500px;
-                    viewport-height: 2000px;
-                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
-                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-                    min_width: 500px;
-                    horizontal_stretch: 300;
-                    vertical_stretch: 300;
-                    
-
-                    columns: [
-                        { title: "Components \ninfos" }
-                    ];
-
-                    rows: [
-                        [
-                            {
-                                text: root.components,
-                                font-size: 25px,
-                                font-weight: 900,
-                                font-family: "Comic Sans MS",
-                                font-italic: true},
-                        ],
-                    ];
-                }     
-            }
-        
-
-            Tab{
-                title: "Groups and users";
-                padding: 10px;
-                StandardTableView {
-                    x: 0px;
-                    y: 0px;
-                    height: parent.height - 60px;
-                    viewport-width: 500px;
-                    viewport-height: 2000px;
-                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
-                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-                    min_width: 500px;
-                    horizontal_stretch: 300;
-                    vertical_stretch: 300;
-
-                    columns: [
-                        { title: "user \ninfos" },
-                    ];
-                    
-
-                    rows: [
-                        [
-                            {
-                                text: root.userInfo,
-                                font-size: 25px,
-                                font-weight: 900,
-                                font-family: "Comic Sans MS",
-                                font-italic: true},
-                        ],
-                    ];
-                }
-            }
-
-            Tab{
-                title: "Network details";
-                padding: 10px;
-
-                StandardTableView {
-                    x: 0px;
-                    y: 0px;
-                    height: parent.height - 60px;
-                    viewport-width: 500px;
-                    viewport-height: 2000px;
-                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
-                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-                    min_width: 500px;
-                    horizontal_stretch: 300;
-                    vertical_stretch: 300;
-
-                    columns: [
-                        { title: "Network \ninfos" },
-                    ];
-
-                    rows: [
-                        [
-                            {
-                                text: root.network,
-                                font-size: 25px,
-                                font-weight: 900,
-                                font-family: "Comic Sans MS",
-                                font-italic: true},
-                        ],
-                    ];
-                }
-            }
-        
-
-            Tab{
-                title: "System infos";
-                padding: 10px;
-                StandardTableView {
-                    x: 0px;
-                    y: 0px;
-                    height: parent.height - 60px;
-                    viewport-width: 500px;
-                    viewport-height: 2000px;
-                    vertical-scrollbar-policy: ScrollBarPolicy.always_on;
-                    horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
-                    min_width: 500px;
-                    horizontal_stretch: 300;
-                    vertical_stretch: 300;
-
-                    columns: [
-                        { title: "System \ninfos" },
-                    ];
-
-                    rows: [
-                        [
-                            {
-                                text: root.system,
-                                font-size: 25px,
-                                font-weight: 900,
-                                font-family: "Comic Sans MS",
-                                font-italic: true},
-                        ],
-                    ];
+                LineEdit {
+                    col: 1;
+                    row: 1;
+                    height: 24px;
+                    max-width: 250px;
+                    text: root.killed;
+                    placeholder-text: "Enter process name to kill";
+                    font-size: 15px;
+                    horizontal-alignment: TextHorizontalAlignment.center;
+                    input-type: text;
                 }
             }
         }
+
+
+
+        Tab {
+            title: "Hardware resources";
+            padding: 10px;
         
+            StandardTableView {
+                x: 0px;
+                y: 0px;
+                padding: 30px;
+                width: parent.width - 60px;
+                height: parent.height - 60px;
+                viewport-width: 1500px;
+                viewport-height: 1500px;
+                vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+                horizontal_stretch: 300;
+                vertical_stretch: 300;
+        
+
+                columns: [
+                    { title: "Cpu infos", sort_order: SortOrder.descending},
+                    { title: "Memory infos" },
+                    { title: "Disk process infos" }
+                ];
+        
+                rows: [
+                    [
+                        {  
+                            text: root.cpu,
+                            font-size: 15px,
+                            font-weight: 900,
+                            font-family: "Comic Sans MS",
+                            col: 0,
+                            width: 300pt, height: parent.height, padding: 30px, spacing: 20px, font-size: 25px,
+                            font-italic: true,
+                            rotation: 90, 
+                            text-align: TextHorizontalAlignment.center,
+                            vertical-align: TextVerticalAlignment.center,
+                        }
+                    ],
+                    [
+                        {
+                            text: root.memory,
+                            font-size: 15px,
+                            font-weight: 900,
+                            font-family: "Comic Sans MS",
+                            col: 1, width: 300pt, height: parent.height, padding: 30px, spacing: 20px,font-size: 25px,
+                            font-italic: true,
+                            rotation: 90, 
+                            text-align: TextHorizontalAlignment.center,
+                            vertical-align: TextVerticalAlignment.center,
+                        }
+                    ],
+                    [
+                        {
+                            text: root.disk,
+                            font-size: 15px,
+                            font-weight: 900, width: 300pt, height: parent.height, padding: 30px, spacing: 20px,font-size: 25px,
+                            font-family: "Comic Sans MS",
+                            col: 2,
+                            font-italic: true,
+                            rotation: 90, 
+                            text-align: TextHorizontalAlignment.center,
+                            vertical-align: TextVerticalAlignment.center,
+                        }
+                    ]
+                ];
+            }
+        }
+        
+    
+
+        Tab{
+            title: "Limits and methods";
+            padding: 10px;
+
+            StandardTableView {
+                x: 0px;
+                y: 0px;
+                height: parent.height - 60px;
+                viewport-width: 500px;
+                viewport-height: 2000px;
+                vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+                min_width: 500px;
+                horizontal_stretch: 300;
+                vertical_stretch: 300;
+                
+
+                columns: [
+                    { title: "Components \ninfos" }
+                ];
+
+                rows: [
+                    [
+                        {
+                            text: root.components,
+                            font-size: 25px,
+                            font-weight: 900,
+                            font-family: "Comic Sans MS",
+                            font-italic: true},
+                    ],
+                ];
+            }     
+        }
+    
+
+        Tab{
+            title: "Groups and users";
+            padding: 10px;
+            StandardTableView {
+                x: 0px;
+                y: 0px;
+                height: parent.height - 60px;
+                viewport-width: 500px;
+                viewport-height: 2000px;
+                vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+                min_width: 500px;
+                horizontal_stretch: 300;
+                vertical_stretch: 300;
+
+                columns: [
+                    { title: "user \ninfos" },
+                ];
+                
+
+                rows: [
+                    [
+                        {
+                            text: root.userInfo,
+                            font-size: 25px,
+                            font-weight: 900,
+                            font-family: "Comic Sans MS",
+                            font-italic: true},
+                    ],
+                ];
+            }
+        }
+
+        Tab{
+            title: "Network details";
+            padding: 10px;
+
+            StandardTableView {
+                x: 0px;
+                y: 0px;
+                height: parent.height - 60px;
+                viewport-width: 500px;
+                viewport-height: 2000px;
+                vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+                min_width: 500px;
+                horizontal_stretch: 300;
+                vertical_stretch: 300;
+
+                columns: [
+                    { title: "Network \ninfos" },
+                ];
+
+                rows: [
+                    [
+                        {
+                            text: root.network,
+                            font-size: 25px,
+                            font-weight: 900,
+                            font-family: "Comic Sans MS",
+                            font-italic: true},
+                    ],
+                ];
+            }
+        }
+    
+
+        Tab{
+            title: "System infos";
+            padding: 10px;
+            StandardTableView {
+                x: 0px;
+                y: 0px;
+                height: parent.height - 60px;
+                viewport-width: 500px;
+                viewport-height: 2000px;
+                vertical-scrollbar-policy: ScrollBarPolicy.always_on;
+                horizontal-scrollbar-policy: ScrollBarPolicy.always_on;
+                min_width: 500px;
+                horizontal_stretch: 300;
+                vertical_stretch: 300;
+
+                columns: [
+                    { title: "System \ninfos" },
+                ];
+
+                rows: [
+                    [
+                        {
+                            text: root.system,
+                            font-size: 25px,
+                            font-weight: 900,
+                            font-family: "Comic Sans MS",
+                            font-italic: true},
+                    ],
+                ];
+            }
+        }
     }
+    
 }

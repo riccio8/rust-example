@@ -1,4 +1,5 @@
 use slint::SharedString;
+use std::sync::{Arc, Mutex};
 use sysinfo::{Components, Disks, Networks, System, ProcessesToUpdate,ProcessRefreshKind};
 use tokio::time::{sleep, Duration};
 
@@ -69,50 +70,66 @@ async fn update_system_info(ui_handle: slint::Weak<MainWindow>) {
 }
 
 async fn update_process_info(ui_handle: slint::Weak<MainWindow>) {
-    let mut sys = System::new_all();
+    let sys = Arc::new(Mutex::new(System::new_all()));
 
     loop {
-        sys.refresh_all();
-        let mut procinfo = String::new();
-
-        for (pid, process) in sys.processes() {
-            procinfo.push_str(&format!(
-                "Process {:#?} (PID: {:#?})\nPath: {:?}\nMemory: {} KB\nCPU: {:.2}%\nStatus: {:?}\n",
-                process.name(),
-                pid,
-                process.exe(),
-                process.memory(),
-                process.cpu_usage(),
-                process.status()
-            ));
-
-            let disk_usage = process.disk_usage();
-            procinfo.push_str(&format!(
-                "Read bytes: new/total => {:?}/{:?}\nWritten bytes: new/total => {:?}/{:?}\n",
-                disk_usage.read_bytes,
-                disk_usage.total_read_bytes,
-                disk_usage.written_bytes,
-                disk_usage.total_written_bytes
-            ));
+        {
+            let mut sys_guard = sys.lock().unwrap(); // Stop the mutex before accessing sys
+            sys_guard.refresh_processes_specifics(
+                ProcessesToUpdate::All,
+                true,
+                ProcessRefreshKind::everything().without_cpu().without_disk_usage().without_environ(),
+            );
         }
 
+        let sys_clone = Arc::clone(&sys);
         let ui_handle_clone = ui_handle.clone();
+
         slint::invoke_from_event_loop(move || {
             if let Some(ui) = ui_handle_clone.upgrade() {
+                let sys_guard = sys_clone.lock().unwrap(); // Reloc before reading sys
+                let mut procinfo = String::new();
+
+                for (pid, process) in sys_guard.processes() {
+                    procinfo.push_str(&format!(
+                        "Process {:#?} (PID: {:#?})\nPath: {:?}\nMemory: {} KB\nCPU: {:.2}%\nStatus: {:?}\n",
+                        process.name(),
+                        pid,
+                        process.exe(),
+                        process.memory(),
+                        process.cpu_usage(),
+                        process.status()
+                    ));
+
+                    let disk_usage = process.disk_usage();
+                    procinfo.push_str(&format!(
+                        "Read bytes: new/total => {:?}/{:?}\nWritten bytes: new/total => {:?}/{:?}\n",
+                        disk_usage.read_bytes,
+                        disk_usage.total_read_bytes,
+                        disk_usage.written_bytes,
+                        disk_usage.total_written_bytes
+                    ));
+                }
+
                 ui.set_processInfo(SharedString::from(procinfo));
+
+                let sys_clone = Arc::clone(&sys_clone);
+                ui.on_killProc(move |string: SharedString| {
+                    let  sys_guard = sys_clone.lock().unwrap();
+                    for (_, process) in sys_guard.processes() {
+                        if process.name() == string.as_str() {
+                            process.kill();
+                        }
+                    }
+                });
             }
         })
         .unwrap();
 
         sleep(Duration::from_secs(3)).await;
-
-        sys.refresh_processes_specifics(
-            ProcessesToUpdate::All,
-            true,
-            ProcessRefreshKind::everything().without_cpu().without_disk_usage().without_environ(),
-        );
     }
 }
+
 
 
 async fn update_network_info(ui_handle: slint::Weak<MainWindow>) {
