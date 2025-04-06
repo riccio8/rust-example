@@ -80,6 +80,18 @@ macro_rules! int_bitset{
     };
 }
 
+macro_rules! op{
+    (+ $_self:ident : $self_type:ty, $other:ident $expr:expr) => {
+        impl ::std::ops::Add for $self_type{
+            type Output = $self_type;
+
+            fn add($_self, $other: $self_type) -> {
+                $expr
+            }
+        }
+    };
+}
+
 #[warn(unused_mut)]
 fn main() {
     let mut p1 = Point { x: 10, y: 20 };
@@ -247,3 +259,4 @@ fn min_max(slice: &[i32]) -> Option<(i32, i32)>{
     }
     Some((min, max))
 }
+
