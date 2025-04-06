@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub}; // for operator overloading
+// use std::ops::{Add, Sub, Mul, Div}; // for operator overloading
 
 #[derive(Copy, Clone)]
 #[derive(Debug)] // for pretty print
@@ -100,6 +100,34 @@ macro_rules! op{
             }
         }
     };
+
+    (* $_self:ident : $self_type:ty, $other:ident $expr:expr) => {
+        impl ::std::ops::Mul for $self_type{
+            type Output = $self_type;
+
+            fn mul($_self, $other: $self_type) -> $self_type{
+                $expr
+            }
+        }
+    };
+
+    (/ $_self:ident : $self_type:ty, $other:ident $expr:expr) => {
+        impl ::std::ops::Div for $self_type{
+            type Output = $self_type;
+
+            fn div($_self, $other: $self_type) -> $self_type{
+                $expr
+            }
+        }
+    };
+}
+
+macro_rules! hash{
+    ($ ($key:expr => $value:expr), *) => {{
+        let mut hashmap = ::std::collections::HashMap::new();
+        $(hashmap.insert($key, $value);)*
+        hashmap
+    }};
 }
 
 #[warn(unused_mut)]
@@ -167,6 +195,12 @@ fn main() {
             y: self.y - other.y,
         }
     });
+
+    let hashmap = hash! {
+        "one" => 1,
+        "two" => 2
+    };
+    println!("{:#?}", hashmap)
 }
 
 //fn not implementes in type
