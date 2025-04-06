@@ -85,7 +85,17 @@ macro_rules! op{
         impl ::std::ops::Add for $self_type{
             type Output = $self_type;
 
-            fn add($_self, $other: $self_type) -> {
+            fn add($_self, $other: $self_type) -> $self_type{
+                $expr
+            }
+        }
+    };
+
+    (- $_self:ident : $self_type:ty, $other:ident $expr:expr) => {
+        impl ::std::ops::Sub for $self_type{
+            type Output = $self_type;
+
+            fn sub($_self, $other: $self_type) -> $self_type{
                 $expr
             }
         }
@@ -142,6 +152,21 @@ fn main() {
     // int_bitset!(u64); ERROR: 67  |         impl BitSet for $ty{
     // |         ^^^^^^^^^^^^^^^^^^^ conflicting implementation for `u64`
     // that's because i declared that twice
+
+    //using other macros:
+    op!(+ self:Point, other{
+        Point{
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    });
+
+    op!(- self:Point, other{
+        Point{
+            x: self.x - other.x,
+            y: self.y - other.y,
+        }
+    });
 }
 
 //fn not implementes in type
@@ -204,6 +229,7 @@ impl BitSet for u64{
     }
 } 
 
+/*
 impl Add<Point> for Point{
     type Output = Point;
 
@@ -214,6 +240,9 @@ impl Add<Point> for Point{
         }
     }
 }
+need to comment that because we used a macro instead of an implementation
+ */
+
 
 //Generics
 fn max<T: PartialOrd>(a: T, b: T) -> T{
