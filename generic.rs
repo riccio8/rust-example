@@ -123,7 +123,7 @@ macro_rules! op{
 }
 
 macro_rules! hash{
-    ($ ($key:expr => $value:expr), *) => {{
+    ($ ($key:expr => $value:expr,) *) => {{ // inside coma if we want optional patterns, outside if we don't
         let mut hashmap = ::std::collections::HashMap::new();
         $(hashmap.insert($key, $value);)*
         hashmap
@@ -198,7 +198,7 @@ fn main() {
 
     let hashmap = hash! {
         "one" => 1,
-        "two" => 2
+        "two" => 2,
     };
     println!("{:#?}", hashmap)
 }
