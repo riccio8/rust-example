@@ -1,4 +1,4 @@
-use std::ops::Add; // for operator overloading
+use std::ops::{Add, Sub}; // for operator overloading
 
 #[derive(Copy, Clone)]
 #[derive(Debug)] // for pretty print
