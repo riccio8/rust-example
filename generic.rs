@@ -1,6 +1,5 @@
 use std::ops::Add; // for operator overloading
 
-
 #[derive(Copy, Clone)]
 #[derive(Debug)] // for pretty print
 //struct
@@ -61,6 +60,25 @@ fn uppercases(c :u8) -> u8{
     }
 }
 
+// macros
+macro_rules! int_bitset{
+    ($ty:ty) => {
+        impl BitSet for $ty{
+            fn clear(&mut self, index: usize){
+                *self &= !(1 << index);
+            }
+            fn set(&mut self, index: usize){
+                *self |= 1 << index;
+            }
+            fn is_set(&self, index: usize) -> bool{
+                (*self >> index) & 1 == 1
+            }
+            fn toogle(&mut self, index: usize){
+                *self ^=1 << index;
+            }
+        }  
+    };
+}
 
 #[warn(unused_mut)]
 fn main() {
@@ -105,6 +123,13 @@ fn main() {
     let pp3 = pp1 + pp2; // operator overloading
     println!("{:#?}", pp3); // pretty print
     println!("{:#?}", pp1.dist_from_origin()); // pretty print
+
+    //macros usage
+    int_bitset!(i32);
+    int_bitset!(u8);
+    // int_bitset!(u64); ERROR: 67  |         impl BitSet for $ty{
+    // |         ^^^^^^^^^^^^^^^^^^^ conflicting implementation for `u64`
+    // that's because i declared that twice
 }
 
 //fn not implementes in type
