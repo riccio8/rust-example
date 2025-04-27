@@ -1,5 +1,3 @@
-use std::env::var;
-
 macro_rules! hi {
     () => {
         println!("hi");
@@ -37,7 +35,7 @@ macro_rules! log {
 
 
 macro_rules! var_type{
-    ($valore:expr) => {
+    ($valore:ty) => {
         println!("Var type: {:?}", std::any::type_name::<$valore>());
     };
 }
@@ -48,7 +46,6 @@ fn main() {
     do_math!(add 34, 8);
     do_math!(mul 7976987, 8);
     add_numbers!(2, 4, 5, 5, 5, 3, 3);
-    var_type!(10);
-    var_type!("Hello");
+    var_type!(i32);
+    var_type!(String);
 }
-
