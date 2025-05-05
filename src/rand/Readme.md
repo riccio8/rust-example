@@ -1,4 +1,4 @@
-#  This is an example about how to create a random number generator given a seed using 2 methods
+#  This is an example about how to create a random number generator given a seed using two methods
 
 ------
 ## There are two simple ways to generate "random" numbers:
