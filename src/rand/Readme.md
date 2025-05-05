@@ -1,9 +1,10 @@
-# This is an example abt how to create a random number generator given a seed using 2 methods
+#  This is an example about how to create a random number generator given a seed using 2 methods
 
+------
 ## There are two simple ways to generate "random" numbers:
 - Linear congruental generators
-- Xor BitOperator
-
+- Xor Bit Operator
+----
 ### Linear congruental:
 - Using ```n``` as any possible number
 - first we need a simple math expression like ```(n + 5 + 8) % 9```
