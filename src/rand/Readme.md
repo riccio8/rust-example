@@ -89,3 +89,16 @@ fn rand_xor(seed: i64){
 }
 ```
 
+- Otherwise u can do something more realistic using the `Marsiglia` algorithm, something like that:
+```rust
+fn xorshift(mut x: u32) -> u32 {
+    x ^= x << 13;
+    x ^= x >> 17;
+    x ^= x << 5;
+    x
+}
+
+fn main(){
+	println!("{}", xorshift(1));
+}
+```
