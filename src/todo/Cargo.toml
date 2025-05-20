@@ -1,0 +1,9 @@
+[package]
+name = "todo"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bincode = { version = "2.0.1", features = ["derive"] }
+serde = { version = "1.0.219", features = ["derive"] }
+sled = "0.34.7"
