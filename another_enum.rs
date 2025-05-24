@@ -9,7 +9,7 @@ impl VehicleStatus {
     pub fn is_operational(&self) -> bool {
         match self{
             VehicleStatus::Parked => true,
-            VehicleStatus::Driving{speed} => true,
+            VehicleStatus::Driving{..} => true,
             _=> false,
         }   
     }
