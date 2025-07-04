@@ -5,6 +5,7 @@ seoDescription: "Explore Sled, a fast, lightweight Rust database suitable for em
 datePublished: Fri Jul 04 2025 09:30:14 GMT+0000 (Coordinated Universal Time)
 cuid: cmcom5xhs000b02jr82ohe5tg
 slug: sled-the-fast-and-lightweight-rust-database
+cover: https://cdn.hashnode.com/res/hashnode/image/upload/v1751637633112/8c1b4b9b-3e92-4bba-9e22-8b3fa3f6e00c.webp
 ogImage: https://cdn.hashnode.com/res/hashnode/image/upload/v1751621371339/990b2d7a-a2aa-428f-be32-3dd46302014d.jpeg
 tags: performance, databases, localstorage, sql, rust, db, storage, sqlx, sled
 
