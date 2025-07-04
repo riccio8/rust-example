@@ -6,7 +6,6 @@ datePublished: Fri Jul 04 2025 13:40:04 GMT+0000 (Coordinated Universal Time)
 cuid: cmcov3818000402ifftcx0fsq
 slug: rusts-regex-under-the-hood
 cover: https://cdn.hashnode.com/res/hashnode/image/upload/v1751636085915/3f8f6e61-c494-4572-afb7-0a46cfc8f798.jpeg
-tags: patterns, performance, rust, regex, rust-lang, pattern-matching, rust-programming, crate
 
 ---
 
