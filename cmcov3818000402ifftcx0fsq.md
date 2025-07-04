@@ -300,7 +300,11 @@ If you want to practice [regex101](https://regex101.com/) is really useful, you 
 
 Catastrophic backtracking happens when certain regex patterns cause exponential time complexity due to nested quantifiers — Rust avoids this by design.
 
+---
+
 `💡 any particular request?`
+
+---
 
 ## ☕ Was this helpful?
 
